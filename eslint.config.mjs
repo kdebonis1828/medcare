@@ -13,6 +13,12 @@ const eslintConfig = defineConfig([
     "build/**",
     "next-env.d.ts",
   ]),
+  {
+  "extends": [
+    "next/core-web-vitals",
+    "eslint:recommended" 
+  ]
+}
 ]);
 
 export default eslintConfig;

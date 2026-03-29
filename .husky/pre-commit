@@ -1,1 +1,9 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+# 1. Revisión de tipos (Si esto falla, el commit se detiene)
+# Usamos --noEmit para que solo valide sin generar archivos .js
+pnpm exec tsc --noEmit
+
+# 2. Revisión de Lint y Formato (Solo en archivos modificados)
 pnpm exec lint-staged
