@@ -2,11 +2,14 @@
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { InputFormData, InputSchema } from "@/schemas/date-form.schema";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
+import { ModalDateRequest } from "./ModalDateRequest";
 
 export const BookDate = () => {
+  const [showModal, setShowModal] = useState(false);
+
   const {
     register,
     handleSubmit,
@@ -20,114 +23,164 @@ export const BookDate = () => {
 
   const onSubmit: SubmitHandler<InputFormData> = (data) => {
     console.log("datos enviados", data);
-  };
-  useEffect(() => {
     if (isSubmitSuccessful) {
+      setShowModal(true);
       reset();
     }
-  }, [isSubmitSuccessful, reset]);
+  };
 
   const inputStyles =
-    "bg-slate-100 border-slate-300 border shadow-xl text-black p-3 rounded-sm focus:ring-2 focus:ring-slate-400 focus:border-transparent outline-none transition-all";
+    "w-full bg-white border border-teal-100 shadow-sm text-sm text-slate-700 p-2.5 rounded-xl focus:ring-2 focus:ring-teal-100 focus:border-teal-300 outline-none transition-all placeholder:text-slate-300";
 
   return (
-    <div className="flex lg:w-[80%]">
-      <div className="hidden lg:block">
+    <div className="flex w-[calc(100%-2rem)] sm:w-[90%] max-w-5xl mx-auto bg-white overflow-hidden shadow-2xl shadow-teal-900/10 rounded-3xl border border-teal-50 my-6">
+      <div className="hidden lg:block relative w-5/12 bg-teal-50">
         <Image
-          alt="Medical image"
-          src="/assets/medform.jpg"
-          className="w-650 h-full rounded-bl-xl rounded-tl-xl shadow-2xl"
-          width={1200}
-          height={1200}
+          alt="Medical appointment"
+          src="/assets/form_appointment.png"
+          className="object-cover"
+          fill
+          priority
         />
+        <div className="absolute inset-0 bg-linear-to-t from-teal-900/20 to-transparent mix-blend-multiply" />
       </div>
-      <div className="bg-slate-50 relative z-10 p-5 rounded-xl lg:rounded-tl-none lg:rounded-bl-none  lg:rounded-tr-xl lg:rounded-br-xl shadow-2xl shadow-slate-600 md:w-150 lg:w-450">
-        <h1 className="text-3xl md:text-4xl font-bold mb-8 text-slate-800 text-center">
-          Appointment Manager
-        </h1>
-        <form
-          className="flex flex-col gap-y-4"
-          onSubmit={handleSubmit(onSubmit)}
-        >
-          <div className="flex flex-col min-h-22">
-            <label
-              htmlFor="name"
-              className="text-md text-slate-400 font-semibold"
-            >
-              Name
-            </label>
-            <input
-              className={inputStyles}
-              placeholder="Enter your name"
-              type="text"
-              {...register("name", { required: true })}
-            />
-            <div className="h-5">
-              {errors.name && (
-                <p className="text-red-500 text-sm mt-1">
-                  {errors.name.message}
-                </p>
-              )}
-            </div>
-          </div>
 
-          <div className="flex flex-col min-h-22">
-            <label
-              htmlFor="lastname"
-              className="text-md text-slate-400  font-semibold"
-            >
-              Lastname
-            </label>
-            <input
-              className={inputStyles}
-              type="text"
-              placeholder=""
-              {...register("lastname", { required: true })}
-            />
-          </div>
+      <div className="w-full lg:w-7/12 p-6 sm:p-8 md:p-10 bg-linear-to-br from-white to-teal-50/40">
+        <div className="max-w-md mx-auto">
+          <h1 className="text-2xl md:text-3xl font-extrabold mb-1.5 text-teal-950 text-center tracking-tight">
+            Appointment Manager
+          </h1>
+          <p className="text-sm text-teal-600/80 text-center mb-6 font-medium">
+            Schedule your visit with our specialists
+          </p>
 
-          <div className="flex flex-col min-h-22">
-            <label htmlFor="" className="text-md text-slate-400 font-semibold">
-              Phone number
-            </label>
-            <input
-              className={inputStyles}
-              type="text"
-              {...register("phone", { required: true })}
-            />
-          </div>
-          <div className="flex flex-col min-h-22">
-            <label htmlFor="" className="text-md text-slate-400 font-semibold">
-              Speciality
-            </label>
-            <select
-              className={inputStyles}
-              {...register("doctor", { required: true })}
-            >
-              <option value="Doctor-1">Doctor 1</option>
-              <option value="Doctor-2">Doctor 2</option>
-              <option value="Doctor-3">Doctor 3</option>
-            </select>
-          </div>
-          <div className="flex flex-col min-h-22">
-            <label htmlFor="" className="text-md text-slate-400 font-semibold">
-              Message
-            </label>
-            <textarea
-              className={`${inputStyles} h-30 resize-none`}
-              {...register("message")}
-            />
-          </div>
-
-          <motion.button
-            whileTap={{ scale: 0.95 }}
-            type="submit"
-            className="bg-slate-800 shadow-2xl font-bold text-xl mt-2 p-3 rounded-md w-full"
+          <form
+            className="flex flex-col gap-y-4"
+            onSubmit={handleSubmit(onSubmit)}
           >
-            Send
-          </motion.button>
-        </form>
+            <div className="flex flex-col sm:flex-row justify-between gap-4">
+              <div className="flex flex-col flex-1">
+                <label
+                  htmlFor="name"
+                  className="text-xs text-teal-800 font-bold mb-1 ml-1 tracking-wide"
+                >
+                  NAME
+                </label>
+                <input
+                  id="name"
+                  className={inputStyles}
+                  placeholder="Enter your name"
+                  type="text"
+                  {...register("name", { required: true })}
+                />
+                <div className="h-3 ml-1 mt-0.5">
+                  {errors.name && (
+                    <p className="text-rose-500 text-[11px] font-medium leading-none">
+                      {errors.name.message}
+                    </p>
+                  )}
+                </div>
+              </div>
+
+              <div className="flex flex-col flex-1">
+                <label
+                  htmlFor="lastname"
+                  className="text-xs text-teal-800 font-bold mb-1 ml-1 tracking-wide"
+                >
+                  LASTNAME
+                </label>
+                <input
+                  id="lastname"
+                  className={inputStyles}
+                  type="text"
+                  placeholder="Enter your lastname"
+                  {...register("lastname", { required: true })}
+                />
+                <div className="h-3 ml-1 mt-0.5">
+                  {errors.lastname && (
+                    <p className="text-rose-500 text-[11px] font-medium leading-none">
+                      {errors.lastname.message}
+                    </p>
+                  )}
+                </div>
+              </div>
+            </div>
+
+            <div className="flex flex-col sm:flex-row justify-between gap-4">
+              <div className="flex flex-col flex-1">
+                <label
+                  htmlFor="phone"
+                  className="text-xs text-teal-800 font-bold mb-1 ml-1 tracking-wide"
+                >
+                  PHONE
+                </label>
+                <input
+                  id="phone"
+                  className={inputStyles}
+                  placeholder="+49 123 4567890"
+                  type="text"
+                  {...register("phone", { required: true })}
+                />
+                <div className="h-3 ml-1 mt-0.5">
+                  {errors.phone && (
+                    <p className="text-rose-500 text-[11px] font-medium leading-none">
+                      {errors.phone.message}
+                    </p>
+                  )}
+                </div>
+              </div>
+
+              <div className="flex flex-col flex-1">
+                <label
+                  htmlFor="doctor"
+                  className="text-xs text-teal-800 font-bold mb-1 ml-1 tracking-wide"
+                >
+                  SPECIALITY
+                </label>
+                <select
+                  id="doctor"
+                  className={inputStyles}
+                  {...register("doctor", { required: true })}
+                >
+                  <option value="Doctor-1">General Practice</option>
+                  <option value="Doctor-2">Cardiology</option>
+                  <option value="Doctor-3">Pediatrics</option>
+                </select>
+                <div className="h-3 ml-1 mt-0.5" />
+              </div>
+            </div>
+
+            <div className="flex flex-col">
+              <label
+                htmlFor="message"
+                className="text-xs text-teal-800 font-bold mb-1 ml-1 tracking-wide"
+              >
+                MESSAGE
+              </label>
+              <textarea
+                id="message"
+                placeholder="How can we help you?"
+                className={`${inputStyles} h-24 resize-none`}
+                {...register("message")}
+              />
+            </div>
+
+            <motion.button
+              whileHover={{ scale: 1.01 }}
+              whileTap={{ scale: 0.98 }}
+              type="submit"
+              className="bg-linear-to-r from-teal-400 to-emerald-400 hover:from-teal-500 hover:to-emerald-500 text-white shadow-md shadow-teal-200/50 font-bold text-base mt-1 py-3 rounded-xl w-full transition-all"
+            >
+              Request Appointment
+            </motion.button>
+          </form>
+        </div>
       </div>
+
+      <ModalDateRequest
+        isOpen={showModal}
+        onClose={() => setShowModal(false)}
+      />
     </div>
   );
 };

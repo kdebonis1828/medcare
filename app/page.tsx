@@ -1,9 +1,48 @@
+import { Navbar } from "@/components/layout/Navbar";
+import { Footer } from "@/components/layout/Footer";
+import { HeroSection } from "@/components/features/landing/HeroSection";
+import { DoctorsSection } from "@/components/features/landing/DoctorsSection";
 import { BookDate } from "@/components/features/patients/BookDate";
 
 export default function Home() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-slate-200 font-sans">
-      <BookDate />
-    </div>
+    <>
+      <Navbar />
+      <main className="flex flex-col flex-1 bg-slate-50">
+        <HeroSection />
+        <DoctorsSection />
+
+        {/* Contact / Appoinment Section */}
+        <section
+          id="contacto"
+          className="pt-16 pb-24 bg-slate-50 relative"
+          aria-labelledby="appointment-heading"
+        >
+          {/* Accessible off-screen text for screen readers */}
+          <span className="sr-only" id="appointment-heading">
+            Book your appointment online
+          </span>
+
+          <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center mb-10">
+            <h2
+              className="text-3xl font-extrabold text-[#004A99] mb-4"
+              aria-hidden="true"
+            >
+              Ready to take the next step?
+            </h2>
+            <p
+              className="text-slate-600 font-medium text-lg leading-relaxed"
+              aria-hidden="true"
+            >
+              Schedule your visit using our secure form below. Let our friendly
+              staff assist you with the care you deserve.
+            </p>
+          </div>
+
+          <BookDate />
+        </section>
+      </main>
+      <Footer />
+    </>
   );
 }
