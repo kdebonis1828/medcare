@@ -3,14 +3,24 @@ import { Footer } from "@/components/layout/Footer";
 import { HeroSection } from "@/components/features/landing/HeroSection";
 import { DoctorsSection } from "@/components/features/landing/DoctorsSection";
 import { BookDate } from "@/components/features/patients/BookDate";
+import { prisma } from "@/lib/prisma";
+import { StaffWithUser } from "@/types";
 
-export default function Home() {
+export default async function Home() {
+  const staffMembers = await prisma.staff.findMany({
+    where: { isActive: true },
+    include: { user: true },
+  });
+
+  const doctorsOnly = (staffMembers as StaffWithUser[]).filter(
+    (s) => s.user.role === "DOCTOR",
+  );
   return (
     <>
       <Navbar />
       <main className="flex flex-col flex-1 bg-slate-50">
         <HeroSection />
-        <DoctorsSection />
+        <DoctorsSection staff={staffMembers} />
 
         {/* Contact / Appoinment Section */}
         <section
@@ -39,7 +49,7 @@ export default function Home() {
             </p>
           </div>
 
-          <BookDate />
+          <BookDate doctors={doctorsOnly} />
         </section>
       </main>
       <Footer />

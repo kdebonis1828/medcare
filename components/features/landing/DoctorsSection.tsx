@@ -1,39 +1,15 @@
 import { MedicalCard } from "./MedicalCard";
 
-const DOCTORS_DATA = [
-  {
-    name: "Dr. Elena Reyes",
-    specialty: "Gynecology",
-    matriculet: "M.P. 45892 | M.N. 112344",
-    imageUrl: "/assets/doctor_avatar_1.png",
-  },
-  {
-    name: "Dr. Marcos Vall",
-    specialty: "General Surgery",
-    matriculet: "M.P. 32112 | M.N. 98455",
-    imageUrl: "/assets/doctor_avatar_2.png",
-  },
-  {
-    name: "Dr. Sofia Navarro",
-    specialty: "Comprehensive Pediatrics",
-    matriculet: "M.P. 51009 | M.N. 129033",
-    imageUrl: "/assets/doctor_avatar_3.png",
-  },
-  {
-    name: "Clara Johansson",
-    specialty: "Patient Relations",
-    matriculet: "First point of contact",
-    imageUrl: "/assets/receptionist_1.png",
-  },
-  {
-    name: "Thomas Miller",
-    specialty: "Front Desk Coordinator",
-    matriculet: "Appointments & Guidance",
-    imageUrl: "/assets/receptionist_2.png",
-  },
-];
+interface StaffProps {
+  staff: {
+    name: string;
+    specialty: string;
+    licenseNumber: string | null;
+    imageUrl: string | null;
+  }[];
+}
 
-export const DoctorsSection = () => {
+export const DoctorsSection = ({ staff = [] }: StaffProps) => {
   return (
     <section id="staff" className="py-24 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -51,14 +27,14 @@ export const DoctorsSection = () => {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10">
-          {DOCTORS_DATA.map((doc, idx) => (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 md:grid-cols-3 gap-6">
+          {staff.map((doc, idx) => (
             <MedicalCard
               key={idx}
               name={doc.name}
               specialty={doc.specialty}
-              matriculet={doc.matriculet}
-              imageUrl={doc.imageUrl}
+              matriculet={doc.licenseNumber || ""}
+              imageUrl={doc.imageUrl || ""}
             />
           ))}
         </div>

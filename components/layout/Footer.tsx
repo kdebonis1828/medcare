@@ -56,7 +56,7 @@ export const Footer = () => {
             <ul className="space-y-4">
               <li>
                 <Link
-                  href="#"
+                  href="/login"
                   className="inline-block bg-white/10 hover:bg-white/20 border border-white/20 rounded-lg px-4 py-2 mt-1 font-semibold text-white transition-all"
                 >
                   Medical Staff Access (Dashboard)

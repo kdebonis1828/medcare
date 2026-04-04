@@ -1,0 +1,91 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+enum Role {
+  ADMIN
+  DOCTOR
+  PATIENT
+  SECRETARY
+}
+
+enum Status {
+  PENDING
+  APPROVED
+  REJECTED
+  COMPLETED
+}
+
+enum StaffStatus {
+  AVAILABLE
+  VACATION
+  MEDICAL_LEAVE
+  PERSONAL_REASONS
+}
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  password  String   // Store bcrypt hashed password
+  role      Role     @default(PATIENT)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  staffProfile   Staff?
+  patientProfile Patient?
+}
+
+model Staff {
+  id            String  @id @default(uuid())
+  name          String
+  specialty     String
+  licenseNumber String? // "Matrícula" - can be null for secretaries
+  isActive      Boolean @default(true)
+  status        StaffStatus @default(AVAILABLE)
+  imageUrl      String? // e.g. "/assets/doctor_avatar_1.png"
+  
+  userId        String  @unique
+  user          User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  appointments  Appointment[] @relation("DoctorAppointments")
+}
+
+model Patient {
+  id              String  @id @default(uuid())
+  name            String
+  phone           String?
+  clinicalHistory Json?   // Store clinical history as JSON payload if dynamic
+  
+  userId          String  @unique
+  user            User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  appointments    Appointment[] @relation("PatientAppointments")
+}
+
+model Appointment {
+  id          String   @id @default(uuid())
+  date        DateTime
+  reason      String
+  status      Status   @default(PENDING)
+  createdAt   DateTime @default(now())
+
+  doctorId    String?
+  doctor      Staff?   @relation("DoctorAppointments", fields: [doctorId], references: [id], onDelete: SetNull)
+
+  patientId   String
+  patient     Patient  @relation("PatientAppointments", fields: [patientId], references: [id], onDelete: Cascade)
+}
+
+model InternalMeeting {
+  id          String   @id @default(uuid())
+  title       String
+  description String?
+  date        DateTime
+  createdAt   DateTime @default(now())
+}

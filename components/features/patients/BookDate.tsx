@@ -2,18 +2,24 @@
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { InputFormData, InputSchema } from "@/schemas/date-form.schema";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { ModalDateRequest } from "./ModalDateRequest";
 
-export const BookDate = () => {
+import { createAppointmentAction } from "@/lib/actions/appointment.actions";
+
+interface BookDateProps {
+  doctors: { id: string; name: string; specialty: string }[];
+}
+
+export const BookDate = ({ doctors = [] }: BookDateProps) => {
   const [showModal, setShowModal] = useState(false);
 
   const {
     register,
     handleSubmit,
-    formState: { isSubmitSuccessful, errors },
+    formState: { errors },
     reset,
   } = useForm<InputFormData>({
     resolver: zodResolver(InputSchema),
@@ -21,11 +27,21 @@ export const BookDate = () => {
     reValidateMode: "onChange",
   });
 
-  const onSubmit: SubmitHandler<InputFormData> = (data) => {
-    console.log("datos enviados", data);
-    if (isSubmitSuccessful) {
+  const onSubmit: SubmitHandler<InputFormData> = async (data) => {
+    // We send data including doctorId to Server Action
+    const res = await createAppointmentAction({
+      name: data.name,
+      lastname: data.lastname,
+      phone: data.phone,
+      doctorId: data.doctor, // We are reusing the 'doctor' combobox to store the ID
+      message: data.message,
+    });
+
+    if (res.success) {
       setShowModal(true);
       reset();
+    } else {
+      alert("There was an error booking your appointment. Please try again.");
     }
   };
 
@@ -45,7 +61,7 @@ export const BookDate = () => {
         <div className="absolute inset-0 bg-linear-to-t from-teal-900/20 to-transparent mix-blend-multiply" />
       </div>
 
-      <div className="w-full lg:w-7/12 p-6 sm:p-8 md:p-10 bg-linear-to-br from-white to-teal-50/40">
+      <div className="w-full lg:w-7/12 p-6 sm:p-8 md:p-10 bg-linear-to-br from-slate-100 to-slate-400/60">
         <div className="max-w-md mx-auto">
           <h1 className="text-2xl md:text-3xl font-extrabold mb-1.5 text-teal-950 text-center tracking-tight">
             Appointment Manager
@@ -141,10 +157,16 @@ export const BookDate = () => {
                   id="doctor"
                   className={inputStyles}
                   {...register("doctor", { required: true })}
+                  defaultValue=""
                 >
-                  <option value="Doctor-1">General Practice</option>
-                  <option value="Doctor-2">Cardiology</option>
-                  <option value="Doctor-3">Pediatrics</option>
+                  <option value="" disabled>
+                    Select a professional
+                  </option>
+                  {doctors.map((doc) => (
+                    <option key={doc.id} value={doc.id}>
+                      {doc.name} - {doc.specialty}
+                    </option>
+                  ))}
                 </select>
                 <div className="h-3 ml-1 mt-0.5" />
               </div>

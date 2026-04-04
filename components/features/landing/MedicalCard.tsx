@@ -14,8 +14,8 @@ export const MedicalCard = ({
   imageUrl,
 }: MedicalCardProps) => {
   return (
-    <div className="bg-white rounded-3xl overflow-hidden shadow-lg border border-slate-100 hover:shadow-2xl transition-shadow duration-300 group">
-      <div className="relative w-full aspect-square bg-slate-100 overflow-hidden">
+    <div className="bg-white rounded-2xl overflow-hidden shadow-md border border-slate-100 hover:shadow-xl transition-all duration-300 group max-w-sm mx-auto w-full">
+      <div className="relative w-full h-48 sm:h-56 bg-slate-100 overflow-hidden">
         <Image
           src={imageUrl}
           alt={`Fotografía de ${name}, ${specialty}`}
@@ -23,26 +23,26 @@ export const MedicalCard = ({
           className="object-cover group-hover:scale-105 transition-transform duration-500"
         />
         {/* Soft gradient from bottom to blend image into card body */}
-        <div className="absolute inset-0 bg-linear-to-t from-white/60 via-transparent to-transparent pointer-events-none" />
+        <div className="absolute inset-x-0 bottom-0 h-24 bg-linear-to-t from-white via-white/80 to-transparent pointer-events-none" />
       </div>
 
-      <div className="p-6 relative bg-white">
+      <div className="px-5 pb-5 pt-2 relative bg-white flex flex-col items-center text-center">
         {/* Logo validation badge */}
-        <div className="absolute -top-7 right-6 w-14 h-14 bg-white rounded-full shadow-md flex items-center justify-center p-2 border border-slate-50">
-          <span className="text-teal-600 font-extrabold text-[10px] leading-tight text-center tracking-tighter">
+        <div className="absolute -top-10 bg-white rounded-full shadow-sm flex items-center justify-center p-1.5 border border-slate-50">
+          <span className="text-[#004A99] font-extrabold text-[8px] leading-tight text-center tracking-tighter">
             MED
             <br />
             CARE
           </span>
         </div>
 
-        <div className="inline-block px-3 py-1 bg-teal-50 text-teal-700 text-xs font-bold rounded-full mb-3 uppercase tracking-wider">
+        <div className="inline-block px-2.5 py-1 bg-[#004A99]/5 text-[#004A99] text-[10px] font-bold rounded-full mb-2 mt-2 tracking-wider">
           {specialty}
         </div>
 
-        <h3 className="text-xl font-extrabold text-[#004A99] mb-1">{name}</h3>
+        <h3 className="text-base font-extrabold text-slate-800 mb-1">{name}</h3>
 
-        <p className="text-slate-500 text-sm font-medium">{matriculet}</p>
+        <p className="text-slate-500 text-xs font-medium">{matriculet}</p>
       </div>
     </div>
   );
