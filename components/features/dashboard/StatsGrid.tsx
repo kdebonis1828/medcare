@@ -92,7 +92,6 @@ export const StatsGrid = ({
       },
     );
   }
-
   const itemsPerPage = 3;
   const totalPages = Math.ceil(activeDoctors.length / itemsPerPage);
   const paginatedStaff = activeDoctors.slice(
@@ -120,7 +119,7 @@ export const StatsGrid = ({
             </span>
           </div>
           <Link
-            href="/dashboard/appointments"
+            href="/dashboard/admin/appointments"
             className="inline-block text-sm font-bold text-[#004A99] hover:text-teal-600 transition-colors"
           >
             Review Schedule →
@@ -129,7 +128,7 @@ export const StatsGrid = ({
       </div>
 
       {/* Available Doctors */}
-      <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex flex-col justify-between">
+      <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex flex-col justify-start gap-y-4 min-h-[250px]">
         <div className="flex justify-between items-start mb-4">
           <h3 className="text-slate-500 font-bold text-sm uppercase tracking-tight">
             Available Staff

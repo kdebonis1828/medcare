@@ -8,11 +8,14 @@ import {
   Status,
 } from "@prisma/client";
 
-export type ActionState = {
-  success?: boolean;
-  message?: string;
-  errors?: Record<string, string[]>;
-} | null;
+export type ActionState =
+  | {
+      success?: boolean;
+      message?: string;
+      errors?: Record<string, string[]>;
+    }
+  | null
+  | undefined;
 
 export type StaffWithUser = Staff & {
   user: User;

@@ -12,12 +12,12 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 const NAV_LINKS = [
-  { href: "/dashboard", label: "Overview", icon: LayoutDashboard },
-  { href: "/dashboard/agenda", label: "Agenda", icon: CalendarCheck },
-  { href: "#pacientes", label: "Patients", icon: Users },
-  { href: "/dashboard/staff", label: "Staff", icon: Stethoscope },
-  { href: "#finanzas", label: "Finance", icon: Wallet },
-  { href: "#ajustes", label: "Settings", icon: Settings },
+  { href: "/dashboard/admin", label: "Overview", icon: LayoutDashboard },
+  { href: "/dashboard/admin/agenda", label: "Agenda", icon: CalendarCheck },
+  { href: "/dashboard/admin/patients", label: "Patients", icon: Users },
+  { href: "/dashboard/admin/staff", label: "Staff", icon: Stethoscope },
+  { href: "/dashboard/admin/finances", label: "Finance", icon: Wallet },
+  { href: "/dashboard/admin/settings", label: "Settings", icon: Settings },
 ];
 
 export const NavbarDesktop = () => {

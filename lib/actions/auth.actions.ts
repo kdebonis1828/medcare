@@ -5,7 +5,10 @@ import bcrypt from "bcryptjs";
 import { redirect } from "next/navigation";
 import { ActionState } from "@/types";
 
-export async function loginAction(prevState: ActionState, formData: FormData) {
+export async function loginAction(
+  prevState: ActionState,
+  formData: FormData,
+): Promise<ActionState> {
   const email = formData.get("email") as string;
   const password = formData.get("password") as string;
 
@@ -34,5 +37,14 @@ export async function loginAction(prevState: ActionState, formData: FormData) {
   await createSession(user.id, user.role);
 
   // Redirect to dashboard
-  redirect("/dashboard");
+  if (user.role === "ADMIN") {
+    redirect("/dashboard/admin");
+  } else if (user.role === "DOCTOR") {
+    redirect("/dashboard/doctor");
+  }
+
+  return {
+    success: false,
+    message: "An unexpected error occurred or unauthorized role.",
+  };
 }

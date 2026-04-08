@@ -7,6 +7,7 @@ export interface CreateAppointmentInput {
   lastname: string;
   phone: string;
   doctorId?: string;
+  email: string;
   message?: string;
 }
 
@@ -14,16 +15,30 @@ export async function createAppointmentAction(
   formData: CreateAppointmentInput,
 ) {
   try {
-    const { name, lastname, phone, doctorId, message } = formData;
+    const { name, lastname, phone, doctorId, email, message } = formData;
+    console.log("Creating appointment for:", {
+      name,
+      lastname,
+      phone,
+      doctorId,
+      email,
+      message,
+    });
 
     const fullName = `${name} ${lastname}`.trim();
     // Unique email placeholder since patient email wasn't captured in this simple form
-    const fallbackEmail = `${phone.replace(/[^0-9]/g, "")}@patient.medcare.com`;
+    const fallbackEmail = `${email}`;
 
     // 1. Create or Find Patient
     const userPatient = await prisma.user.upsert({
       where: { email: fallbackEmail },
-      update: {},
+      update: {
+        patientProfile: {
+          update: {
+            name: fullName,
+          },
+        },
+      },
       create: {
         email: fallbackEmail,
         password: "NoPasswordRequiredForFormAuth",

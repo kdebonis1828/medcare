@@ -27,7 +27,7 @@ export const HeroSection = () => {
             is why we are here to listen, support, and provide the world-class
             care you and your loved ones deserve.
           </h2>
-          <div className="flex flex-col sm:flex-row gap-4">
+          <div className="flex flex-col sm:flex-row gap-4 mb-5">
             <Link
               href="#contacto"
               className="bg-teal-500 hover:bg-teal-400 text-white font-bold text-lg px-8 py-4 rounded-xl shadow-xl shadow-teal-900/20 transition-all text-center"

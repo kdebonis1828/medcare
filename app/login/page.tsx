@@ -13,7 +13,7 @@ export default function LoginPage() {
       <div className="absolute top-[-10%] left-[-10%] w-[40vw] h-[40vw] rounded-full bg-teal-200/40 blur-[100px] pointer-events-none" />
       <div className="absolute bottom-[-10%] right-[-10%] w-[30vw] h-[30vw] rounded-full bg-blue-200/40 blur-[100px] pointer-events-none" />
 
-      <div className="w-full max-w-5xl flex rounded-3xl shadow-2xl bg-white overflow-hidden relative z-10 m-4 border border-slate-100">
+      <div className="w-full max-w-5xl flex h-[90vh] rounded-3xl shadow-2xl bg-white overflow-hidden relative z-10 m-4 border border-slate-100">
         {/* Left Side: Soft Image */}
         <div className="hidden lg:flex w-1/2 relative bg-teal-50 flex-col items-center justify-center p-12 text-center overflow-hidden">
           <Image

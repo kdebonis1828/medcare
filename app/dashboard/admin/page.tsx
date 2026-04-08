@@ -61,7 +61,10 @@ export default async function DashboardPage() {
 
         {/* We use Suspense boundaries typically here to use the skeleton loaders */}
         <UrgentTasks pendingAppointments={pendingAppointments} />
-        <StatsGrid doctors={doctors} />
+        <StatsGrid
+          doctors={doctors}
+          pendingCount={pendingAppointments.length}
+        />
 
         <div className="pt-4">
           <FinanceChart />

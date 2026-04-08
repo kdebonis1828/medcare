@@ -15,6 +15,22 @@ export default async function AppointmentsPage({
 
   const awaitedParams = await searchParams;
   const query = (awaitedParams.q as string) || "";
+  const currentPage = Number(awaitedParams.page) || 1;
+  const ITEMS_PER_PAGE = 10;
+
+  // Fetch total count for pagination indicators
+  const totalItems = await prisma.appointment.count({
+    where: {
+      patient: {
+        name: {
+          contains: query,
+          mode: "insensitive",
+        },
+      },
+    },
+  });
+
+  const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE);
 
   // Fetch appointments matching patient name logic
   const appointments = (await prisma.appointment.findMany({
@@ -31,8 +47,10 @@ export default async function AppointmentsPage({
       doctor: { include: { user: true } },
     },
     orderBy: {
-      date: "asc",
+      date: "desc",
     },
+    skip: (currentPage - 1) * ITEMS_PER_PAGE,
+    take: ITEMS_PER_PAGE,
   })) as AppointmentWithDetails[];
 
   return (
@@ -51,7 +69,7 @@ export default async function AppointmentsPage({
             but for a simple demo we can use a native HTML form submitting a GET request */}
         <form
           method="GET"
-          action="/dashboard/appointments"
+          action="/dashboard/admin/appointments"
           className="relative w-full md:w-96"
         >
           <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
@@ -159,6 +177,43 @@ export default async function AppointmentsPage({
               )}
             </tbody>
           </table>
+        </div>
+
+        {/* Pagination Controls */}
+        <div className="px-6 py-4 bg-slate-50 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <p className="text-xs font-bold text-slate-500 uppercase tracking-wider">
+            Showing{" "}
+            <span className="text-[#004A99]">{appointments.length}</span> of{" "}
+            <span className="text-[#004A99]">{totalItems}</span> appointments
+          </p>
+
+          <div className="flex items-center gap-2">
+            <a
+              href={`/dashboard/appointments?page=${currentPage - 1}${query ? `&q=${query}` : ""}`}
+              className={`px-4 py-2 text-xs font-bold rounded-lg border border-slate-200 transition-all ${
+                currentPage <= 1
+                  ? "opacity-50 pointer-events-none bg-slate-100 text-slate-400"
+                  : "bg-white text-slate-700 hover:bg-slate-50 hover:border-[#004A99]/30"
+              }`}
+            >
+              Previous
+            </a>
+
+            <div className="px-4 py-2 bg-white border border-slate-200 rounded-lg text-xs font-bold text-slate-600">
+              Page {currentPage} of {totalPages || 1}
+            </div>
+
+            <a
+              href={`/dashboard/appointments?page=${currentPage + 1}${query ? `&q=${query}` : ""}`}
+              className={`px-4 py-2 text-xs font-bold rounded-lg border border-slate-200 transition-all ${
+                currentPage >= totalPages
+                  ? "opacity-50 pointer-events-none bg-slate-100 text-slate-400"
+                  : "bg-white text-slate-700 hover:bg-slate-50 hover:border-[#004A99]/30"
+              }`}
+            >
+              Next
+            </a>
+          </div>
         </div>
       </div>
     </div>

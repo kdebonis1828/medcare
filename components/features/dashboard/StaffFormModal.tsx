@@ -23,7 +23,7 @@ export const StaffFormModal = ({
     initialData?.imageUrl || null,
   );
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsPending(true);
     setError(null);

@@ -1,55 +1,27 @@
 "use client";
-import { SubmitHandler, useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { InputFormData, InputSchema } from "@/schemas/date-form.schema";
-import { useState } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { ModalDateRequest } from "./ModalDateRequest";
-
-import { createAppointmentAction } from "@/lib/actions/appointment.actions";
+import { useBookForm } from "@/hooks/useBookForm";
 
 interface BookDateProps {
   doctors: { id: string; name: string; specialty: string }[];
 }
 
 export const BookDate = ({ doctors = [] }: BookDateProps) => {
-  const [showModal, setShowModal] = useState(false);
-
   const {
     register,
-    handleSubmit,
+    onSubmit,
     formState: { errors },
-    reset,
-  } = useForm<InputFormData>({
-    resolver: zodResolver(InputSchema),
-    mode: "onSubmit",
-    reValidateMode: "onChange",
-  });
-
-  const onSubmit: SubmitHandler<InputFormData> = async (data) => {
-    // We send data including doctorId to Server Action
-    const res = await createAppointmentAction({
-      name: data.name,
-      lastname: data.lastname,
-      phone: data.phone,
-      doctorId: data.doctor, // We are reusing the 'doctor' combobox to store the ID
-      message: data.message,
-    });
-
-    if (res.success) {
-      setShowModal(true);
-      reset();
-    } else {
-      alert("There was an error booking your appointment. Please try again.");
-    }
-  };
+    showModal,
+    setShowModal,
+  } = useBookForm();
 
   const inputStyles =
     "w-full bg-white border border-teal-100 shadow-sm text-sm text-slate-700 p-2.5 rounded-xl focus:ring-2 focus:ring-teal-100 focus:border-teal-300 outline-none transition-all placeholder:text-slate-300";
 
   return (
-    <div className="flex w-[calc(100%-2rem)] sm:w-[90%] max-w-5xl mx-auto bg-white overflow-hidden shadow-2xl shadow-teal-900/10 rounded-3xl border border-teal-50 my-6">
+    <div className="flex w-[calc(100%-2rem)] sm:w-[90%] max-w-5xl  mx-auto bg-white overflow-hidden shadow-2xl shadow-teal-900/10 rounded-3xl border border-teal-50 my-6">
       <div className="hidden lg:block relative w-5/12 bg-teal-50">
         <Image
           alt="Medical appointment"
@@ -70,10 +42,7 @@ export const BookDate = ({ doctors = [] }: BookDateProps) => {
             Schedule your visit with our specialists
           </p>
 
-          <form
-            className="flex flex-col gap-y-4"
-            onSubmit={handleSubmit(onSubmit)}
-          >
+          <form className="flex flex-col gap-y-4" onSubmit={onSubmit}>
             <div className="flex flex-col sm:flex-row justify-between gap-4">
               <div className="flex flex-col flex-1">
                 <label
@@ -169,6 +138,29 @@ export const BookDate = ({ doctors = [] }: BookDateProps) => {
                   ))}
                 </select>
                 <div className="h-3 ml-1 mt-0.5" />
+              </div>
+            </div>
+
+            <div className="flex flex-col">
+              <label
+                htmlFor="email"
+                className="text-xs text-teal-800 font-bold mb-1 ml-1 tracking-wide"
+              >
+                EMAIL
+              </label>
+              <input
+                id="email"
+                className={inputStyles}
+                placeholder="Enter your email"
+                type="email"
+                {...register("email", { required: true })}
+              />
+              <div className="h-3 ml-1 mt-0.5">
+                {errors.email && (
+                  <p className="text-rose-500 text-[11px] font-medium leading-none">
+                    {errors.email.message}
+                  </p>
+                )}
               </div>
             </div>
 
