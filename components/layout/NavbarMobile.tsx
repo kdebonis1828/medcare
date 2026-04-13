@@ -1,21 +1,35 @@
 "use client";
-import { LayoutDashboard, CalendarCheck, Stethoscope } from "lucide-react";
+import {
+  LayoutDashboard,
+  CalendarCheck,
+  Stethoscope,
+  Users,
+  StickyNote,
+} from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-const MOBILE_LINKS = [
-  { href: "/dashboard", label: "Overview", icon: LayoutDashboard },
-  { href: "/dashboard/agenda", label: "Agenda", icon: CalendarCheck },
-  { href: "/dashboard/staff", label: "Staff", icon: Stethoscope },
+const ADMIN_LINKS = [
+  { href: "/dashboard/admin", label: "Overview", icon: LayoutDashboard },
+  { href: "/dashboard/admin/agenda", label: "Agenda", icon: CalendarCheck },
+  { href: "/dashboard/admin/staff", label: "Staff", icon: Stethoscope },
+];
+
+const DOCTOR_LINKS = [
+  { href: "/dashboard/doctor", label: "Agenda", icon: CalendarCheck },
+  { href: "/dashboard/doctor/patients", label: "Patients", icon: Users },
+  { href: "/dashboard/doctor/notes", label: "Notes", icon: StickyNote },
 ];
 
 export const NavbarMobile = () => {
   const pathname = usePathname();
+  const isDoctor = pathname.startsWith("/dashboard/doctor");
+  const links = isDoctor ? DOCTOR_LINKS : ADMIN_LINKS;
 
   return (
     <nav className="lg:hidden fixed bottom-0 left-0 w-full bg-[#003B7A] border-t border-[#002f63] z-50 pb-safe">
       <div className="flex justify-around items-center h-16">
-        {MOBILE_LINKS.map((link) => {
+        {links.map((link) => {
           const Icon = link.icon;
           const isActive = pathname === link.href;
 

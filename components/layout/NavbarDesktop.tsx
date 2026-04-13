@@ -7,11 +7,12 @@ import {
   Wallet,
   Settings,
   LogOut,
+  StickyNote,
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-const NAV_LINKS = [
+const ADMIN_LINKS = [
   { href: "/dashboard/admin", label: "Overview", icon: LayoutDashboard },
   { href: "/dashboard/admin/agenda", label: "Agenda", icon: CalendarCheck },
   { href: "/dashboard/admin/patients", label: "Patients", icon: Users },
@@ -20,8 +21,17 @@ const NAV_LINKS = [
   { href: "/dashboard/admin/settings", label: "Settings", icon: Settings },
 ];
 
+const DOCTOR_LINKS = [
+  { href: "/dashboard/doctor", label: "My Agenda", icon: CalendarCheck },
+  { href: "/dashboard/doctor/patients", label: "My Patients", icon: Users },
+  { href: "/dashboard/doctor/notes", label: "Notes", icon: StickyNote },
+  { href: "/dashboard/doctor/profile", label: "Profile", icon: Stethoscope },
+];
+
 export const NavbarDesktop = () => {
   const pathname = usePathname();
+  const isDoctor = pathname.startsWith("/dashboard/doctor");
+  const links = isDoctor ? DOCTOR_LINKS : ADMIN_LINKS;
 
   return (
     <aside className="hidden lg:flex flex-col w-64 h-screen fixed left-0 top-0 bg-[#003B7A] text-white shadow-xl z-20">
@@ -32,12 +42,12 @@ export const NavbarDesktop = () => {
           </span>
         </Link>
         <span className="text-xs uppercase tracking-wider font-semibold text-teal-300">
-          Admin Dashboard
+          {isDoctor ? "Doctor Dashboard" : "Admin Dashboard"}
         </span>
       </div>
 
       <nav className="flex-1 mt-8 px-4 space-y-2">
-        {NAV_LINKS.map((link) => {
+        {links.map((link) => {
           const Icon = link.icon;
           const isActive = pathname === link.href;
 
@@ -63,12 +73,16 @@ export const NavbarDesktop = () => {
 
       <div className="p-4 border-t border-white/10">
         <div className="flex items-center gap-3 px-4 py-3 bg-white/5 rounded-xl border border-white/10 mb-4 cursor-pointer hover:bg-white/10 transition">
-          <div className="w-10 h-10 rounded-full bg-teal-600 flex items-center justify-center font-bold">
-            DR
+          <div className="w-10 h-10 rounded-full bg-teal-600 flex items-center justify-center font-bold text-sm">
+            {isDoctor ? "DOC" : "ADM"}
           </div>
           <div className="flex-1 overflow-hidden">
-            <p className="text-sm font-bold truncate">Dr. Reyes</p>
-            <p className="text-xs text-teal-300 truncate">Administrator</p>
+            <p className="text-sm font-bold truncate">
+              {isDoctor ? "Doctor Menu" : "Admin Menu"}
+            </p>
+            <p className="text-xs text-teal-300 truncate">
+              {isDoctor ? "Medical Staff" : "Administrator"}
+            </p>
           </div>
         </div>
         <Link

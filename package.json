@@ -12,6 +12,7 @@
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
     "@prisma/client": "^6.19.3",
+    "date-fns": "^4.1.0",
     "framer-motion": "^12.38.0",
     "jose": "^6.2.2",
     "lucide-react": "^1.7.0",

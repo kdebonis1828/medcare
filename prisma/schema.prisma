@@ -54,6 +54,7 @@ model Staff {
   user          User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   appointments  Appointment[] @relation("DoctorAppointments")
+  notes         Note[]
 }
 
 model Patient {
@@ -66,6 +67,7 @@ model Patient {
   user            User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   appointments    Appointment[] @relation("PatientAppointments")
+  notes           Note[]
 }
 
 model Appointment {
@@ -88,4 +90,15 @@ model InternalMeeting {
   description String?
   date        DateTime
   createdAt   DateTime @default(now())
+}
+
+model Note {
+  id        String   @id @default(uuid())
+  content   String
+  doctorId  String
+  doctor    Staff    @relation(fields: [doctorId], references: [id], onDelete: Cascade)
+  patientId String?  
+  patient   Patient? @relation(fields: [patientId], references: [id], onDelete: SetNull)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
