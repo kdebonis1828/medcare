@@ -34,7 +34,7 @@ export const DoctorsSection = ({ staff = [] }: StaffProps) => {
               name={doc.name}
               specialty={doc.specialty}
               matriculet={doc.licenseNumber || ""}
-              imageUrl={doc.imageUrl || ""}
+              imageUrl={doc.imageUrl || null}
             />
           ))}
         </div>

@@ -4,7 +4,7 @@ interface MedicalCardProps {
   name: string;
   specialty: string;
   matriculet: string;
-  imageUrl: string;
+  imageUrl: string | null;
 }
 
 export const MedicalCard = ({
@@ -17,7 +17,7 @@ export const MedicalCard = ({
     <div className="bg-white rounded-2xl overflow-hidden shadow-md border border-slate-100 hover:shadow-xl transition-all duration-300 group max-w-sm mx-auto w-full">
       <div className="relative w-full h-48 sm:h-56 bg-slate-100 overflow-hidden">
         <Image
-          src={imageUrl}
+          src={imageUrl || "/assets/doctor_avatar_1.png"}
           alt={`Fotografía de ${name}, ${specialty}`}
           fill
           className="object-cover group-hover:scale-105 transition-transform duration-500"

@@ -32,6 +32,22 @@ async function main() {
     },
   });
 
+  // TEST DOCTOR
+  const testDoctor = await prisma.user.create({
+    data: {
+      email: "testdoctor@medcare.com",
+      password: defaultPassword,
+      role: "DOCTOR",
+      staffProfile: {
+        create: {
+          name: "Test Doctor",
+          specialty: "Test Specialty",
+        },
+      },
+    },
+    include: { staffProfile: true },
+  });
+
   // --- DOCTORS ---
   // Create Doctors alongside their User accounts
   const docsData = [
