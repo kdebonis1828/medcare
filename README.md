@@ -93,13 +93,3 @@ Implementé una jerarquía visual basada en los principios de diseño de aplicac
     ```bash
     pnpm dev
     ```
-
----
-
-## 👤 Sobre Mí
-
-Soy un Desarrollador Full-Stack dedicado a crear soluciones que no solo funcionen, sino que **impacten**. Este proyecto es una muestra de mi capacidad para adoptar tecnologías emergentes, estructurar arquitecturas escalables y diseñar experiencias de usuario memorables.
-
-**¿Buscas elevar tu equipo con un perfil técnico sólido y visionario? ¡Hablemos!**
-
-📩 [Tu Email] | 🔗 [Tu LinkedIn] | 🌍 [Tu Portfolio]

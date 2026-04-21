@@ -4,12 +4,13 @@ import { redirect } from "next/navigation";
 import { CalendarCheck, Users, Clock, Trash2 } from "lucide-react";
 import { AgendaCreateModal } from "./AgendaCreateModal";
 import { deleteMeeting } from "@/lib/actions/agenda.actions";
+import { InternalMeeting } from "@prisma/client";
 
 export default async function AgendaPage() {
   const session = await getSession();
   if (!session || session.role !== "ADMIN") redirect("/dashboard");
 
-  const meetings = await prisma.internalMeeting.findMany({
+  const meetings: InternalMeeting[] = await prisma.internalMeeting.findMany({
     orderBy: { date: "asc" },
   });
 
