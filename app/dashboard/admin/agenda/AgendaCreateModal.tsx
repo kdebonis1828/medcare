@@ -1,5 +1,5 @@
 "use client";
-import { useState, useActionState, useEffect } from "react";
+import { useState, useActionState } from "react";
 import { Plus, X } from "lucide-react";
 import { createInternalMeeting } from "@/lib/actions/agenda.actions";
 

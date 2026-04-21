@@ -67,6 +67,7 @@ export async function createAppointmentAction(
         date: new Date(new Date().getTime() + 24 * 60 * 60 * 1000), // Scheuled roughly 24h from now conceptually
         reason: message || "General Consultation via Web",
         status: "PENDING",
+        number: phone,
         doctorId: doctorId,
         patientId: patientId,
       },

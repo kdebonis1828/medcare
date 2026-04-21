@@ -5,11 +5,15 @@ import { revalidatePath } from "next/cache";
 export async function updateAppointmentStatus(
   id: string,
   status: "APPROVED" | "REJECTED",
+  date?: Date,
 ) {
   try {
     await prisma.appointment.update({
       where: { id },
-      data: { status },
+      data: {
+        status,
+        ...(date && { date }),
+      },
     });
     revalidatePath("/dashboard");
     return { success: true };

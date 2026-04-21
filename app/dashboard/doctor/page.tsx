@@ -51,8 +51,12 @@ export default async function DoctorDashboardPage() {
   const todayBegin = new Date();
   todayBegin.setHours(0, 0, 0, 0);
 
+  const todayEnd = new Date();
+  todayEnd.setHours(23, 59, 59, 999);
+
   const todaysAppointments = staff.appointments.filter((app) => {
-    return new Date(app.date) >= todayBegin;
+    const appDate = new Date(app.date);
+    return appDate >= todayBegin && appDate <= todayEnd;
   });
 
   return (

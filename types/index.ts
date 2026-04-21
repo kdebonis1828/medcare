@@ -43,3 +43,9 @@ export type AuthActionState = ActionState & {
 export type AppointmentActionState = ActionState;
 
 export type MeetingActionState = ActionState;
+
+export type PatientActionState = {
+  success: boolean;
+  message?: string;
+  error?: string;
+} | null;

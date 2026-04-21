@@ -76,7 +76,7 @@ model Appointment {
   reason      String
   status      Status   @default(PENDING)
   createdAt   DateTime @default(now())
-
+  number      String   @default("UNSPECIFIED")
   doctorId    String?
   doctor      Staff?   @relation("DoctorAppointments", fields: [doctorId], references: [id], onDelete: SetNull)
 

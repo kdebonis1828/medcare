@@ -1,6 +1,8 @@
+import { prisma } from "@/lib/prisma";
+import { getSession } from "@/lib/session";
 import { Calendar } from "lucide-react";
 
-export const WelcomeBanner = () => {
+export const WelcomeBanner = async () => {
   const today = new Date();
   const currentDate = new Intl.DateTimeFormat("en-US", {
     weekday: "long",
@@ -19,6 +21,11 @@ export const WelcomeBanner = () => {
     };
   });
 
+  const session = await getSession();
+  const user = await prisma.staff.findUnique({
+    where: { userId: session?.userId as string },
+  });
+
   return (
     <div className="bg-white rounded-2xl p-6 md:p-8 flex flex-col md:flex-row justify-between items-center shadow-sm border border-slate-100">
       <div className="text-center md:text-left mb-6 md:mb-0">
@@ -26,7 +33,7 @@ export const WelcomeBanner = () => {
           General Overview
         </span>
         <h1 className="text-2xl md:text-3xl font-extrabold text-[#004A99] mb-2 leading-tight">
-          Good morning, Admin! <br className="hidden md:block" />
+          Good morning, {user?.name} <br className="hidden md:block" />
           Here is how the clinic looks today.
         </h1>
         <p className="text-slate-500 font-medium flex items-center justify-center md:justify-start gap-2">
