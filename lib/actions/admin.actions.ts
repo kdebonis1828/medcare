@@ -8,6 +8,40 @@ export async function updateAppointmentStatus(
   date?: Date,
 ) {
   try {
+    if (status === "APPROVED") {
+      const appointmentToUpdate = await prisma.appointment.findUnique({
+        where: { id },
+      });
+
+      if (!appointmentToUpdate) {
+        return { success: false, message: "Appointment not found" };
+      }
+
+      if (appointmentToUpdate.doctorId) {
+        const checkDate = date || appointmentToUpdate.date;
+        const conflict = await prisma.appointment.findFirst({
+          where: {
+            doctorId: appointmentToUpdate.doctorId,
+            date: checkDate,
+            status: {
+              in: ["APPROVED", "COMPLETED"],
+            },
+            id: {
+              not: id,
+            },
+          },
+        });
+
+        if (conflict) {
+          return {
+            success: false,
+            message:
+              "The doctor already has an appointment scheduled at this time.",
+          };
+        }
+      }
+    }
+
     await prisma.appointment.update({
       where: { id },
       data: {

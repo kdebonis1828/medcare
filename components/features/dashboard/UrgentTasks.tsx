@@ -20,6 +20,7 @@ export const UrgentTasks = ({
   const [selectedDates, setSelectedDates] = useState<Record<string, string>>(
     {},
   );
+  const [errors, setErrors] = useState<Record<string, string>>({});
 
   const formatDateForInput = (date: Date | string) => {
     try {
@@ -37,14 +38,20 @@ export const UrgentTasks = ({
     status: "APPROVED" | "REJECTED",
     originalDate: Date,
   ) => {
+    setErrors((prev) => ({ ...prev, [id]: "" }));
     const dateStr = selectedDates[id];
     const finalDate =
       status === "APPROVED" && dateStr
         ? new Date(dateStr)
         : new Date(originalDate);
 
-    await updateAppointmentStatus(id, status, finalDate);
-    // Optionally clear state for this ID if needed, but the component might unmount/re-render
+    const result = await updateAppointmentStatus(id, status, finalDate);
+    if (result && !result.success) {
+      setErrors((prev) => ({
+        ...prev,
+        [id]: result.message || "Error al actualizar",
+      }));
+    }
   };
 
   return (
@@ -118,6 +125,12 @@ export const UrgentTasks = ({
                 />
               </div>
 
+              {errors[apt.id] && (
+                <div className="mt-3 text-xs font-semibold text-red-600 bg-red-50 p-2 rounded border border-red-100 flex items-center gap-1.5">
+                  <AlertCircle size={14} className="shrink-0" />
+                  {errors[apt.id]}
+                </div>
+              )}
               <div className="mt-5 flex gap-2 w-full">
                 <button
                   onClick={() =>
